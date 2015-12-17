@@ -18,7 +18,7 @@ public class SolidColorLightingMaterial extends Material {
     private static final String TAG = "solidcolorlighting";
     float[] color = new float[4];
     //public static float[] lightingModel = new float[16];
-    static int program = -2;
+    static int program = -1;
     static int positionParam;
     static int colorParam;
     static int normalParam;
@@ -41,7 +41,7 @@ public class SolidColorLightingMaterial extends Material {
 
     public static void setupProgram(){
         //Already setup?
-        if (program == -2) return;
+        if (program != -1) return;
 
         //Create shader program
         program = createProgram(R.raw.solid_color_lighting_vertex, R.raw.solid_color_lighting_fragment);
