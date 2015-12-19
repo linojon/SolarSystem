@@ -102,7 +102,11 @@ public class MainActivity extends CardboardActivity implements IRenderBox {
 
         planets = new Planet[distances.length + 1];
         for(int i = 0; i < distances.length; i++){
-            planets[i] = new Planet(distances[i], scales[i], rotations[i], orbits[i], texIds[i], origin);
+            if (i==2) {
+                planets[i] = new Earth(distances[i], scales[i], rotations[i], orbits[i], texIds[i], R.drawable.earth_night_tex, origin);
+            } else {
+                planets[i] = new Planet(distances[i], scales[i], rotations[i], orbits[i], texIds[i], origin);
+            }
         }
 
 //		Create the moon
@@ -110,12 +114,18 @@ public class MainActivity extends CardboardActivity implements IRenderBox {
         planets[distances.length] = new Planet(15f, 0.005f, 0, -0.516058586f, R.drawable.moon_tex, planets[2].getTransform());
     }
 
+    int currPlanet = 2;
+
+    public void onCardboardTrigger(){
+        if (++currPlanet >= planets.length)
+            currPlanet = 0;
+        goToPlanet(currPlanet);
+    }
+
+
     void goToPlanet(int index){
         RenderBox.mainCamera.getTransform().setParent(planets[index].getOrbitransform(), false);
-        RenderBox.mainCamera.getTransform().setLocalPosition(planets[index].distance, planets[2].radius * 1.5f, planets[index].radius * 2f);
-//        currPlanet++;
-//        if(currPlanet >= planets.length)
-//            currPlanet = 0;
+        RenderBox.mainCamera.getTransform().setLocalPosition(planets[index].distance, planets[index].radius * 1.5f, planets[index].radius * 2f);
     }
 
     public static int loadTexture(final int resourceId){

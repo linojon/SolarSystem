@@ -7,12 +7,21 @@ import com.cardbookvr.solarsystem.RenderBoxExt.components.Sphere;
  * Created by Jonathan on 12/18/2015.
  */
 public class Planet {
-    private float rotation, orbit;
-    private Transform orbitTransform, transform;
+    protected float rotation, orbit;
+    protected Transform orbitTransform, transform;
 
     public float distance, radius;
 
+    public Planet(float distance, float radius, float rotation, float orbit, Transform origin){
+        setupPlanet(distance, radius, rotation, orbit, origin);
+    }
+
     public Planet(float distance, float radius, float rotation, float orbit, int texId, Transform origin){
+        setupPlanet(distance, radius, rotation, orbit, origin);
+        transform.addComponent(new Sphere(texId));
+    }
+
+    public void setupPlanet(float distance, float radius, float rotation, float orbit, Transform origin){
         //Compress the distances and scale
         distance *= 0.5f;
         radius *= 100f;
@@ -24,11 +33,10 @@ public class Planet {
         this.orbitTransform.setParent(origin, false);
 
         transform = new Transform()
-            .setParent(orbitTransform, false)
-            .setLocalPosition(distance, 0, 0)
-            .setLocalRotation(180, 0, 0)
-            .setLocalScale(radius, radius, radius)
-            .addComponent(new Sphere(texId));
+                .setParent(orbitTransform, false)
+                .setLocalPosition(distance, 0, 0)
+                .setLocalRotation(180, 0, 0)
+                .setLocalScale(radius, radius, radius);
     }
 
     public Transform getTransform(){return transform;}
